@@ -1,0 +1,49 @@
+.todo {
+    padding-left: 50px;
+}
+
+ol {
+    padding: 0;
+    width: 500px;
+    height: 320px;
+}
+
+p {
+    margin: 15px;
+}
+
+li {
+    padding: 10px;
+    list-style: none;
+    position: relative;
+    border: 1px solid #000;
+}
+
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.btnDel {
+    margin: 3px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+form {
+    width: 400px;
+    height: 100px;
+    display: none;
+}
+
+input,
+textarea {
+    margin-bottom: 15px;
+    background: none;
+    border: none;
+    outline:none;
+    border-bottom: 1px solid #000;
+}
