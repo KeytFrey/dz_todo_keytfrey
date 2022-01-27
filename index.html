@@ -9,13 +9,17 @@
 </head>
 <body>
     <div class="todo">
-        <ol class="list"></ol>
         <button class="btnAdd">[Добавить]</button>
         <Form>
             <input type="input" name="text" placeholder="Введите животное">
             <textarea name="text" cols="30" rows="1,5" placeholder="Введите описание животного"></textarea> <br>
-            <button class="btnSave">[Сохранить]</button>
+            <button class="btnSave_one" type="submit">[Сохранить в 1 список]</button>
+            <button class="btnSave_two" type="submit">[Сохранить во 2 список]</button>
         </Form>
+        <div class="all_list">
+            <ol class="list_one"></ol>
+            <ol class="list_two"></ol>
+        </div>
     </div>
  <script src="app.js"></script>
 </body>

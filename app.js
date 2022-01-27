@@ -1,46 +1,79 @@
 let form = document.querySelector ('form')
-let inp = document.querySelector('input').value
-let txtar = document.querySelector('textarea').value
+let ol = document.querySelector('.list')
+let inp = document.querySelector('input')
+let txtar = document.querySelector('textarea')
 let btnAdd = document.querySelector('.btnAdd')
-let btnSave = document.querySelector('.btnSave')
+let btnSave_one = document.querySelector('.btnSave_one')
+let btnSave_two = document.querySelector('.btnSave_two')
 
-fetch("http://127.0.0.1:5500/list.json").then(async (res) => {
-    let data = await res.json()
-    for(let i=0; i<data.length; i++) {
-        let item = data[i]
-    }
 
-    data.forEach((item) => {
-        let ol = document.querySelector('.list')
-        let li = document.createElement('li')
-        let p = document.createElement('div')
-        let btnDel = document.createElement('button')
-        btnDel.appendChild(document.createTextNode('[x]'))
-        li.appendChild(document.createTextNode(item.name))
-        p.appendChild(document.createTextNode(item.text))
-        btnDel.classList.add('btnDel')
+function addItem(ol, {name, text}) {
+    let li = document.createElement('li')
+    li.appendChild(document.createTextNode(`${name}`))
+    ol.appendChild(li)
 
-        btnDel.addEventListener('click', () => {
-        li.remove(ol)
-        })
+    let p = document.createElement('div')
+    p.innerHTML = text
+    li.appendChild(p)
 
-        btnAdd.addEventListener('click', () => {
-            btnAdd.style.display = 'none'
-            form.style.display = 'block'
-        })
+    let btnDel = document.createElement('button')
+    btnDel.appendChild(document.createTextNode('[x]'))
+    btnDel.classList.add('btnDel')
+    li.appendChild(btnDel)
 
-        btnSave.addEventListener('click', () => {
-            li.appendChild(document.createTextNode(inp))
-            p.appendChild(document.createTextNode(txtar))
-            li.parentNode.appendChild(ol)
-        })
+    li.style.background = 'azure'
+}
 
-        li.style.background = 'azure'
+Promise.all([
+    fetch("http://127.0.0.1:5500/list_one.json").then(res => res.json()),
+    fetch("http://127.0.0.1:5500/list_two.json").then(res => res.json())
+]).then(([list1, list2]) => {
 
-        li.appendChild(btnDel)
-        li.appendChild(p)
-        ol.appendChild(li)
+    let ol1 = document.querySelector('.list_one')
+    list1.forEach(item => addItem(ol1, item))
 
+    let ol2 = document.querySelector('.list_two')
+    list2.forEach(item => addItem(ol2, item))
+
+    ol1.addEventListener('click', ({target}) => {
+        if(Array.prototype.slice.call(target.classList).indexOf('btnDel') >= 0) {
+            target.parentNode.remove();
+        }
+    });
+
+    ol2.addEventListener('click', ({target}) => {
+        if(Array.prototype.slice.call(target.classList).indexOf('btnDel') >= 0) {
+            target.parentNode.remove();
+        }
+    });
+
+    btnAdd.addEventListener('click', () => {
+        btnAdd.style.display = 'none'
+        form.style.display = 'block'
+    })
+
+    btnSave_one.addEventListener('click', (event) => {
+        event.preventDefault();
+        let a = {'name': inp.value, 'text': txtar.value}
+        if (inp.value !== '' &&  txtar.value !== '') {
+            addItem(ol1, a)
+        } else {
+            alert ('Поля не заполнены!')
+        }
+        inp.value = ''
+        txtar.value = ''
+    })
+
+    btnSave_two.addEventListener('click', (event) => {
+        event.preventDefault();
+        let a = {'name': inp.value, 'text': txtar.value}
+        if (inp.value !== '' &&  txtar.value !== '') {
+            addItem(ol2, a)
+        } else {
+            alert ('Поля не заполнены!')
+        }
+        inp.value = ''
+        txtar.value = ''
     })
 })
 
